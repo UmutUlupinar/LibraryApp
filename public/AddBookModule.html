@@ -109,8 +109,9 @@
         <input type="text" id="yazar" name="yazar" required><br><br>
 
         <!-- Kitap tarihi -->
-        <label for="tarih">Tarih:</label>
-        <input type="date" id="tarih" name="tarih" required><br><br>
+        <label for="tarih">Yıl:</label>
+        <input type="text" id="tarih" name="tarih" required pattern="\d{4}" placeholder="YYYY" inputmode="numeric">
+        <br><br>
 
         <!-- Yayınevi -->
         <label for="yayınevi">Yayınevi:</label>
