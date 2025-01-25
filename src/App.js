@@ -1,24 +1,37 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 
 function App() {
+  const handleNavigate = (url) => {
+    window.location.href = url;
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className="App">
+        <header className="App-header">
+          <h1>Kitap Yönetim Sistemi</h1>
+          <div>
+            <button
+                onClick={() => handleNavigate('AddBookModule.html')}
+                className="App-button"
+            >
+              Kitap Ekle
+            </button>
+            <button
+                onClick={() => handleNavigate('ListBookModule.html')}
+                className="App-button"
+            >
+              Kitapları Listele
+            </button>
+            <button
+                onClick={() => handleNavigate('CategorizeLibraryModule.html')}
+                className="App-button"
+            >
+              Kategorileri Ayarla
+            </button>
+          </div>
+        </header>
+      </div>
   );
 }
 

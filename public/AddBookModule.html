@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kitap Ekle</title>
+    <style>
+        /* Yandaki listeyi biraz şık hale getirmek için stil ekledim */
+        #selectedAltBasliklar {
+            margin-top: 20px;
+        }
+        #selectedAltBasliklar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        #selectedAltBasliklar li {
+            padding: 5px;
+            background-color: #f0f0f0;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        /* Form ve butonlara stil ekliyoruz */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: #61dafb;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #21a1f1;
+        }
+
+        select[multiple] {
+            height: 150px;
+        }
+
+        .App-button {
+            background-color: #61dafb;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .App-button:hover {
+            background-color: #21a1f1;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Kitap Ekle</h1>
+    <form>
+        <!-- Kitap adı -->
+        <label for="kitapAdi">Kitap Adı:</label>
+        <input type="text" id="kitapAdi" name="kitapAdi" required><br><br>
+
+        <!-- Yazar adı -->
+        <label for="yazar">Yazar:</label>
+        <input type="text" id="yazar" name="yazar" required><br><br>
+
+        <!-- Kitap tarihi -->
+        <label for="tarih">Tarih:</label>
+        <input type="date" id="tarih" name="tarih" required><br><br>
+
+        <!-- Yayınevi -->
+        <label for="yayınevi">Yayınevi:</label>
+        <input type="text" id="yayınevi" name="yayınevi" required><br><br>
+
+        <!-- Tür -->
+        <label for="tur">Türü:</label>
+        <select id="tur" name="tur" required onchange="updateAltBasliklar()">
+            <option value="">Tür Seçin</option>
+            <option value="tarih">Tarih</option>
+            <option value="sosyoloji">Sosyoloji</option>
+            <option value="turkEdebiyati">Türk Edebiyatı</option>
+        </select><br><br>
+
+        <!-- Alt başlıklar (çoklu seçim) olacak şekilde -->
+        <label for="altBasliklar">Alt Başlıklar:</label>
+        <select id="altBasliklar" name="altBasliklar[]" multiple size="6" required>
+            <!-- Seçilen tür ile değişen alt başlıklar buraya eklenecek -->
+        </select><br><br>
+
+        <!-- Seçilen alt başlıkları gösterecek alan -->
+        <div id="selectedAltBasliklar">
+            <h3>Seçilen Alt Başlıklar:</h3>
+            <ul id="altBaslikListesi"></ul>
+        </div>
+
+        <!-- Formu gönder -->
+        <input type="submit" value="Kitap Ekle">
+    </form>
+</div>
+
+<script>
+    // Her tür için uygun alt başlıklar
+    const altBasliklarData = {
+        tarih: ['Osmanlı', 'Roma', 'İslam', 'Cumhuriyet', 'Bizans', 'Avrupa', 'Ortaçağ', 'Uzakdoğu'],
+        sosyoloji: ['Kent', 'Toplum', 'Politika', 'Tüketim', 'Medya', 'İnsanlık Tarihi'],
+        turkEdebiyati: ['Polisiye', 'Postmodern', 'Anadolu', 'Osmanlı', 'Kurgu', 'Cumhuriyet Dönemi', 'Roman', 'Karamsar']
+    };
+
+    // Tür değiştiğinde alt başlıkları güncelleme fonksiyonu
+    function updateAltBasliklar() {
+        const tur = document.getElementById('tur').value;
+        const altBasliklarSelect = document.getElementById('altBasliklar');
+        const altBaslikListesi = document.getElementById('altBaslikListesi');
+
+        // Alt başlıklar dropdown'unu temizle
+        altBasliklarSelect.innerHTML = '';
+
+        // Seçilen tür için alt başlıkları listeye ekle
+        if (tur && altBasliklarData[tur]) {
+            altBasliklarData[tur].forEach(function(altBaslik) {
+                const option = document.createElement('option');
+                option.value = altBaslik;
+                option.textContent = altBaslik;
+                altBasliklarSelect.appendChild(option);
+            });
+        }
+
+        // Seçilen alt başlıkları listele
+        altBaslikListesi.innerHTML = '';
+    }
+
+    // Alt başlıklar seçildiğinde seçilen başlıkları listeleme
+    document.getElementById('altBasliklar').addEventListener('change', function() {
+        const selectedOptions = Array.from(this.selectedOptions);
+        const altBaslikListesi = document.getElementById('altBaslikListesi');
+
+        // Listeyi temizle
+        altBaslikListesi.innerHTML = '';
+
+        // Seçilen her bir alt başlığı listeye ekle
+        selectedOptions.forEach(function(option) {
+            const li = document.createElement('li');
+            li.textContent = option.textContent; // Seçilen öğenin metnini al
+            altBaslikListesi.appendChild(li);
+        });
+    });
+</script>
+
+</body>
+</html>
