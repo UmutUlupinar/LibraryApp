@@ -99,7 +99,7 @@
 
 <div class="container">
     <h1>Kitap Ekle</h1>
-    <form>
+    <form id="bookForm">
         <!-- Kitap adı -->
         <label for="kitapAdi">Kitap Adı:</label>
         <input type="text" id="kitapAdi" name="kitapAdi" required><br><br>
@@ -189,6 +189,30 @@
             altBaslikListesi.appendChild(li);
         });
     });
+
+    // Kitap kaydetme işlemi
+    function saveBook(event) {
+        event.preventDefault();
+
+        const book = {
+            kitapAdi: document.getElementById('kitapAdi').value,
+            yazar: document.getElementById('yazar').value,
+            tarih: document.getElementById('tarih').value,
+            yayınevi: document.getElementById('yayınevi').value,
+            tur: document.getElementById('tur').value,
+        };
+
+        if (window.electron && window.electron.saveBook) {
+            window.electron.saveBook(book); // Veriyi Electron'a gönder
+            window.electron.onBookSaved((message) => {
+                alert(message); // Kaydedildi mesajı
+            });
+        } else {
+            alert("Electron API'leri yüklenemedi.");
+        }
+    }
+
+    document.getElementById('bookForm').addEventListener('submit', saveBook);
 </script>
 
 </body>
